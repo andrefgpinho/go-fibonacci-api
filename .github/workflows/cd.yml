@@ -11,16 +11,16 @@ jobs:
     environment:
       name: production
       url: https://devops-server.intro.codeforall.io
-
-    - name: Deploy to EC2
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.EC2_USERNAME }}
-        password: ${{ secrets.EC2_PASSWORD }}
-        script: |
-          docker pull ${{ github.event.inputs.image_reference }}
-          docker stop fibonacci || true
-          docker rm fibonacci || true
-          docker run -d --name fibonacci -p 8083:8080 ${{ github.event.inputs.image_reference }}
+    steps:
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          password: ${{ secrets.EC2_PASSWORD }}
+          script: |
+            docker pull ${{ github.event.inputs.image_reference }}
+            docker stop fibonacci || true
+            docker rm fibonacci || true
+            docker run -d --name fibonacci -p 8083:8080 ${{ github.event.inputs.image_reference }}
 
